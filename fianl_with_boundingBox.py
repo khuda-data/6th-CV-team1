@@ -19,9 +19,6 @@ output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1)
 
-# 랜드마크 인덱스 (코)
-nose_indices = [1, 2, 98, 168, 195, 5]
-
 # 웹캠 초기화
 cap = cv2.VideoCapture(0)
 
@@ -109,6 +106,11 @@ while cap.isOpened():
 
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
+            # 얼굴 전체 랜드마크 시각화
+            for id, lm in enumerate(face_landmarks.landmark):
+                x, y = int(lm.x * frame_w), int(lm.y * frame_h)
+                cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)  # 모든 랜드마크에 대해 원 그리기
+
             # 코의 Depth 값 저장
             nose_depths = []
 
@@ -117,7 +119,7 @@ while cap.isOpened():
                 z = lm.z  # Depth 값
 
                 # 코 랜드마크 확인 및 저장
-                if id in nose_indices:
+                if id in [1, 2, 98, 168, 195, 5]:
                     nose_depths.append(z)
                     cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
 
@@ -171,4 +173,4 @@ while cap.isOpened():
         break
 
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAll
