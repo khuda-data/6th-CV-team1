@@ -4,9 +4,9 @@ import time
 import mediapipe as mp
 
 # YOLOv4-tiny 설정
-config_path = r"C:\Users\kangmin\Desktop\yolov4-tiny.cfg"
-weights_path = r"C:\Users\kangmin\Desktop\yolov4-tiny.weights"
-coco_names_path = r"C:\Users\kangmin\Desktop\coco.names"
+config_path = r"models\yolov4-tiny.cfg"
+weights_path = r"models\yolov4-tiny.weights"
+coco_names_path = r"models\coco.names"
 
 with open(coco_names_path, 'r') as f:
     classes = [line.strip() for line in f.readlines()]
@@ -23,7 +23,7 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1)
 cap = cv2.VideoCapture(0)
 
 # 오버레이할 이미지 경로
-overlay_image_path = r"C:\Users\kangmin\Desktop\aa.png"
+overlay_image_path = r"sample_filter\aa.png"
 overlay_image = cv2.imread(overlay_image_path, cv2.IMREAD_UNCHANGED)  # 알파 채널 포함
 
 # 오버레이 이미지 크기 가져오기
