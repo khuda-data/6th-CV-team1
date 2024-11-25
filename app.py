@@ -90,7 +90,7 @@ def select_frame():
     if selected_image:
         selected_overlay = cv2.imread(selected_image, cv2.IMREAD_UNCHANGED)
 
-    return redirect(url_for('scan_page'))
+    return redirect(url_for('start_webcam'))
 
 
 # OpenCV 비디오 스트림 생성
