@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Overlay</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            color: #0d47a1;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        #webcam-container {
+            position: relative;
+            display: inline-block;
+            animation: slideUp 1s ease-in-out;
+        }
+        #webcam-feed {
+            width: 640px;
+            height: auto;
+            border: 8px solid #90caf9;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        #capture-button {
+            position: absolute;
+            bottom: -50px; /* 웹캠 하단으로 약간 떨어지도록 설정 */
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
+            color: white;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        #capture-button:hover {
+            background: linear-gradient(135deg, #0d47a1, #003c8f);
+            transform: translate(-50%, -3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        #capture-button:active {
+            transform: translate(-50%, 2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .button {
+            margin-top: 60px;
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
+            color: white;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #0d47a1, #003c8f);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #546e7a;
+            animation: fadeIn 1s ease-in-out;
+        }
+        footer::before {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            margin: 10px auto;
+            background: #90caf9;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            #webcam-feed {
+                width: 90%;
+                border-width: 6px;
+            }
+            #capture-button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            .button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            #capture-button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+            .button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Photo Booth Overlay</h1>
+    <div id="webcam-container">
+        <img id="webcam-feed" src="{{ url_for('video_feed') }}" alt="Webcam Feed">
+        <button id="capture-button" onclick="capturePhoto()">Capture</button>
+    </div>
+    <a href="/" class="button">Back to Frame Selection</a>
+    <footer>Developed with ❤️ by KHUDA CV Track</footer>
+    <script>
+        function capturePhoto() {
+            fetch('/capture_photo', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/show_photo';
+                    } else {
+                        alert('Failed to capture photo.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while capturing the photo.');
+                });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanning...</title>
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #0d47a1;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 640px;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            border: 6px solid #90caf9;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        #scan-bar {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 8px; /* 높이를 약간 더 키움 */
+            background: linear-gradient(90deg, rgba(0, 255, 127, 0.8), rgba(0, 191, 255, 0.8), rgba(0, 255, 127, 0.8));
+            background-size: 300% 100%; /* 애니메이션을 부드럽게 하기 위해 추가 */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 127, 0.7), 0 0 20px rgba(0, 191, 255, 0.5);
+            animation: scan 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1), gradientShift 4s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #0d47a1, #003c8f);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .social-icons {
+            margin-top: 10px;
+        }
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .social-icons img:hover {
+            transform: scale(1.2);
+        }
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            button {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Depth Scanning...</h1>
+    <div class="video-container">
+        <video id="webcam" autoplay muted></video>
+        <div id="scan-bar"></div>
+    </div>
+    <button onclick="goToWebcam()">촬영 준비 완료</button>
+    <footer>
+        <p>&copy; 2024 Scanning App. All rights reserved.</p>
+        <div class="social-icons">
+            <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook">
+            <img src="https://cdn-icons-png.flaticon.com/512/145/145812.png" alt="Twitter">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+        </div>
+    </footer>
+    <script>
+        // 웹캠 스트림 가져오기
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                document.getElementById('webcam').srcObject = stream;
+            })
+            .catch(error => {
+                console.error("Webcam access error:", error);
+            });
+
+        // 촬영 준비 완료 버튼 클릭 시 /webcam으로 이동
+        function goToWebcam() {
+            window.location.href = "/webcam";
+        }
+    </script>
+</body>
+</html>
